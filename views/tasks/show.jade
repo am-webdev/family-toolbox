@@ -1,0 +1,11 @@
+extends ../layout
+
+block content
+	h1.
+		Task #{task.id}
+	p Name: #{task.name}
+	p description: #{task.description}
+	p owner: #{task.owner}
+	p assignee: #{task.assignee}
+	p duedate: #{task.duedate}
+	p completed: #{task.completed}

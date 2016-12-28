@@ -1,0 +1,26 @@
+extends ../layout
+
+block content
+    h1.
+         #{title}
+    ul
+        - each task, i in tasks
+            li
+                = task.id
+                = task.name
+                = task.description
+                = task.owner
+                = task.assignee
+                = task.duedate
+                = task.completed
+                form(action='/tasks/#{task._id}',method='POST',enctype='application/x-www-form-urlencoded')
+                    input(type='hidden',value='DELETE',name='_method')
+                    button(type='submit').
+                        Delete
+                p 
+                    a(href='/tasks/#{task.id}/edit') Edit
+                p
+                    a(href='/tasks/#{task.id}') Show
+
+    p
+        a(href='/tasks/new') New Task

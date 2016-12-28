@@ -1,0 +1,15 @@
+extends ../layout
+
+block content
+    h1.
+        task ID #{task.id}
+    form(action='/tasks/#{task.id}',method='PUT',name='updatetask',enctype='application/x-www-form-urlencoded')
+        p Name: 
+            input#inputName(type='text', value='#{task.name}', name='name')
+        p Are you completed?: 
+            input#inputIsLoved(type='checkbox', name='completed', checked=('#{task.completed}'==='true' ? "checked" : undefined))
+        p 
+            input(type='hidden',value='PUT',name='_method')
+        p 
+            button#btnSubmit(type='submit').
+                Update

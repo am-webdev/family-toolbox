@@ -1,0 +1,18 @@
+extends ../layout
+
+block content
+    h1.
+        #{title}
+    form#formAddtask(name="addtask",method="post",action="/tasks")
+        p Name: 
+            input#inputName(type="text", placeholder="ex. John Smith", name="name")
+
+        p description:
+            input#inputDescription(type="text", placeholder="description", name="description")
+        p Already completed?: 
+            input#completed(type="checkbox", name="completed")
+        p Due Date:
+            input#inputDate(type="text", placeholder="Date", name="Date")
+        p
+            button#btnSubmit(type="submit") submit
+
