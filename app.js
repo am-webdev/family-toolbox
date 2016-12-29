@@ -4,12 +4,17 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var db = db = require('./model/db');
-var task = require('./model/tasks');
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
+var expressSession = require('express-session');
 
-var routes = require('./routes/index');
-var tasks = require('./routes/tasks');
-var users = require('./routes/users');
+var db      = require('./model/db');
+var task    = require('./model/tasks');
+var user    = require('./model/users');
+
+var routes  = require('./routes/index');
+var tasks   = require('./routes/tasks');
+var users   = require('./routes/users');
 
 var app = express();
 
@@ -23,11 +28,26 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+// Auth with Passport
+app.use(require('express-session')({
+    secret: 'keyboard cat',
+    resave: false,
+    saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
 app.use('/users', users);
 app.use('/tasks', tasks);
+
+// passport config
+passport.use(new LocalStrategy(user.authenticate()));
+passport.serializeUser(user.serializeUser());
+passport.deserializeUser(user.deserializeUser());
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -12,7 +12,7 @@ block content
         p Are you completed?: 
             input#completed(type='checkbox', name='completed', checked=('#{task.completed}'==='true' ? "checked" : undefined))
         p Owner:
-            input#inputOwner(type='text', value='#{task.owner}', name='owner', disabled='disabled')
+            input#inputOwner(type='text', value='#{task.owner.username}', name='owner', disabled='disabled')
         p Assignee:
             input#inputAssignee(type='text', value='#{task.assignee}', name='assignee')
         p Due Date:

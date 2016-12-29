@@ -1,19 +1,30 @@
-var express = require('express'),
-router = express.Router(),
-    mongoose = require('mongoose'), //mongo connection
-    bodyParser = require('body-parser'), //parses information from POST
-    methodOverride = require('method-override'); //used to manipulate POST
+var express = require('express');
+var router = express.Router();
+var mongoose = require('mongoose'); //mongo connection
+var bodyParser = require('body-parser'); //parses information from POST
+var methodOverride = require('method-override'); //used to manipulate POST
+var user    = require('../model/users');
 
+var isAuthenticated = function (req, res, next) {
+  if (req.isAuthenticated())
+    return next();
+  res.redirect('/login');
+}
 
-    router.use(bodyParser.urlencoded({ extended: true }))
-    router.use(methodOverride(function(req, res){
-      if (req.body && typeof req.body === 'object' && '_method' in req.body) {
-        // look in urlencoded POST bodies and delete it
-        var method = req.body._method
-        delete req.body._method
-        return method
-      }
-    }))
+router.all("/*", isAuthenticated, function(req, res, next) {
+  next(); // if the middleware allowed us to get here,
+          // just move on to the next route handler
+});
+
+router.use(bodyParser.urlencoded({ extended: true }));
+router.use(methodOverride(function(req, res){
+  if (req.body && typeof req.body === 'object' && '_method' in req.body) {
+    // look in urlencoded POST bodies and delete it
+    var method = req.body._method
+    delete req.body._method
+    return method
+  }
+}));
 
 
 //build the REST operations at the base for tasks
@@ -48,7 +59,7 @@ router.route('/')
         // Get values from POST request. These can be done through forms or REST calls. These rely on the "name" attributes for forms
         var tmp_name = req.body.name;
         var tmp_description = req.body.description;
-        var tmp_owner = req.body.owner;
+        var tmp_owner = req.user;
         var tmp_assignee = req.body.assignee;
         var tmp_duedate = req.body.duedate;
         var tmp_completed = req.body.completed;
@@ -119,7 +130,7 @@ router.param('id', function(req, res, next, id) {
             // go to the next thing
             next(); 
           } 
-        });
+        }).populate("owner").populate("assignee");
   });
 
 router.route('/:id')
@@ -129,6 +140,8 @@ router.route('/:id')
       console.log('GET Error: There was a problem retrieving: ' + err);
     } else {
       console.log('GET Retrieving ID: ' + req.id);
+      console.log(task.owner);
+      console.log(task.owner.username);
         //var tasktks = tasktks.toISOString();
         //tasktks = tasktks.substring(0, tasktks.indexOf('T'))
         res.format({
@@ -142,7 +155,7 @@ router.route('/:id')
           }
         });
       }
-    });
+    }).populate("owner").populate("assignee");
 });
 
 //GET the individual task by Mongo ID
@@ -171,7 +184,7 @@ router.get('/:id/edit', function(req, res) {
                }
              });
         }
-      });
+      }).populate("owner").populate("assignee");
   });
 
 //PUT to update a task by ID
@@ -212,7 +225,7 @@ router.put('/:id', function(req, res) {
                        });
                     }
                   })
-          });
+          }).populate("owner").populate("assignee");
  });
 
 //DELETE a task by ID
@@ -244,7 +257,7 @@ router.delete('/:id', function (req, res){
                   }
                 });
           }
-        });
+        }).populate("owner").populate("assignee");
   });
 
 

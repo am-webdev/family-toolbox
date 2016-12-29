@@ -1,9 +1,15 @@
-var mongoose = require('mongoose');  
-var taskSchema = new mongoose.Schema({  
-  alias: String,
-  email: String,
-  password: String,
-  created: { type: Date, default: Date.now },
-  updated: { type: Date, default: Date.now }
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
+var passportLocalMongoose = require('passport-local-mongoose');
+
+var User = new Schema({
+	username: String,
+	email: String,
+	password: String,
+	created: { type: Date, default: Date.now },
+	updated: { type: Date, default: Date.now }
 });
-mongoose.model('User', userSchema);
+
+User.plugin(passportLocalMongoose);
+
+module.exports = mongoose.model('User', User);
