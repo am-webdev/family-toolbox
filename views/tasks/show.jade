@@ -9,3 +9,9 @@ block content
 	p assignee: #{task.assignee}
 	p duedate: #{task.duedate}
 	p completed: #{task.completed}
+	p 
+		a(href='/tasks/#{task.id}/edit') Edit
+		form(action='/tasks/#{task._id}',method='POST',enctype='application/x-www-form-urlencoded')
+			input(type='hidden',value='DELETE',name='_method')
+			button(type='submit').
+				Delete

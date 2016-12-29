@@ -4,7 +4,7 @@ var taskSchema = new mongoose.Schema({
   description: String,
   owner: String,
   assignee: String,
-  duedate: { type: Date, default: null },
+  duedate: { type: Date},
   completed: { type: Boolean, default: false },
   created: { type: Date, default: Date.now },
   updated: { type: Date, default: Date.now }
