@@ -8,9 +8,10 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var expressSession = require('express-session');
 
-var db      = require('./model/db');
-var task    = require('./model/tasks');
-var user    = require('./model/users');
+var db        = require('./model/db');
+var task      = require('./model/tasks');
+var user      = require('./model/users');
+var family    = require('./model/family');
 
 var routes  = require('./routes/index');
 var tasks   = require('./routes/tasks');

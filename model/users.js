@@ -15,6 +15,10 @@ var User = new Schema({
 		type: String,
 		enum: ['Child', 'Parent']
 	},
+	family: {
+		type: mongoose.Schema.Types.ObjectId,
+		ref: 'Family'
+	},
 	admin: { type: Boolean, default: false },
 	created: { type: Date, default: Date.now },
 	updated: { type: Date, default: Date.now }
