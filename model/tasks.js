@@ -12,6 +12,10 @@ var taskSchema = new mongoose.Schema({
   },
   duedate: { type: Date},
   completed: { type: Boolean, default: false },
+  priority: { 
+    type: String,
+    enum: ['Trivial', 'Minor', 'Major', 'Critical', 'Blocker']
+  },
   created: { type: Date, default: Date.now },
   updated: { type: Date, default: Date.now }
 });
