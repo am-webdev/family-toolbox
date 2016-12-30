@@ -33,3 +33,37 @@ mixin nav_header
         block
  
 //- End navbar mixins
+
+
+//- List group mixins
+- var groupType
+ 
+mixin listGroup(type)
+    - groupType = type
+    case groupType
+        when 'list'
+            ul.list-group
+                block
+        default
+            .list-group
+                block
+ 
+mixin listItem(arg1, arg2)
+    case groupType
+        when 'list'
+            li( class=["list-group-item", arg1] )
+                block
+        when 'links'
+            a( href=arg1, class=["list-group-item", arg2] )
+                block
+        default
+            .list-group-item( class=["list-group-item", arg1] )
+                block
+ 
+mixin listHeading
+    h4.list-group-item-heading
+        block
+ 
+mixin listText
+    .list-group-item-text
+        block
