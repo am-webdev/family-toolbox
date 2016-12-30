@@ -1,9 +1,9 @@
-var express = require('express');
-var router = express.Router();
-var User    = require('../model/users')
-var passport = require('passport');
-var bodyParser = require('body-parser'); //parses information from POST
-var methodOverride = require('method-override'); //used to manipulate POST
+var express         = require('express');
+var router          = express.Router();
+var User            = require('../model/users')
+var passport        = require('passport');  // provides user auth middelware
+var bodyParser      = require('body-parser'); //parses information from POST
+var methodOverride  = require('method-override'); //used to manipulate POST
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -42,10 +42,6 @@ router.post('/login', passport.authenticate('local'), function(req, res) {
 router.get('/logout', function(req, res) {
     req.logout();
     res.redirect('/');
-});
-
-router.get('/ping', function(req, res){
-    res.status(200).send("pong!");
 });
 
 module.exports = router;

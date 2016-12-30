@@ -12,6 +12,8 @@ var isAuthenticated = function (req, res, next) {
 }
 
 router.all("/*", isAuthenticated, function(req, res, next) {
+  res.locals.user = req.user || null;
+  
   next(); // if the middleware allowed us to get here,
           // just move on to the next route handler
 });
@@ -140,8 +142,6 @@ router.route('/:id')
       console.log('GET Error: There was a problem retrieving: ' + err);
     } else {
       console.log('GET Retrieving ID: ' + req.id);
-      console.log(task.owner);
-      console.log(task.owner.username);
         //var tasktks = tasktks.toISOString();
         //tasktks = tasktks.substring(0, tasktks.indexOf('T'))
         res.format({
