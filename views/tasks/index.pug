@@ -5,6 +5,6 @@ block content
          #{title}
     +listGroup("links")
         each task, i in tasks
-            a.list-group-item( href='/tasks/#{task.id}' )
+            a.list-group-item( href='/tasks/'+task.id )
                 h4.list-group-item-heading #{task.name}
                 p.list-group-item-text #{task.description}

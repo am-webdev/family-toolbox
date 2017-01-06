@@ -3,24 +3,24 @@ extends ../layout
 block content
     h1.
         task ID #{task.id}
-    form(action='/tasks/#{task.id}',method='POST',name='updatetask',enctype='application/x-www-form-urlencoded')
+    form(action='/tasks/'+task.id,method='POST',name='updatetask',enctype='application/x-www-form-urlencoded')
         p Name: 
-            input#inputName(type='text', value='#{task.name}', name='name')
+            input#inputName(type='text', value= task.name, name='name')
         p Description: 
             textarea#description( name="description", rows="6", cols="66")
                 | #{task.description}
         p Are you completed?: 
-            input#completed(type='checkbox', name='completed', checked=('#{task.completed}'==='true' ? "checked" : undefined))
+            input#completed(type='checkbox', name='completed', checked=('task.completed'==='true' ? "checked" : undefined))
         p Owner:
-            input#inputOwner(type='text', value='#{task.owner.username}', name='owner', disabled='disabled')
+            input#inputOwner(type='text', value= task.owner.username, name='owner', disabled='disabled')
         p Assignee:
-            input#inputAssignee(type='text', value='#{task.assignee}', name='assignee')
+            input#inputAssignee(type='text', value= task.assignee, name='assignee')
         p Due Date:
-            input#inputDuedate(type='text', value='#{task.duedate}', name='duedate')
+            input#inputDuedate(type='text', value= task.duedate, name='duedate')
         p Created:
-            input#inputCreated(type='text', value='#{task.created}', name='created', disabled='disabled')
+            input#inputCreated(type='text', value= task.created, name='created', disabled='disabled')
         p Last Update:
-            input#inputUpdate(type='text', value='#{task.updated}', name='updated', disabled='disabled')
+            input#inputUpdate(type='text', value= task.updated, name='updated', disabled='disabled')
         p 
             input(type='hidden',value='PUT',name='_method')
         p 
