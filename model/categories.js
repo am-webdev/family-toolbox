@@ -1,12 +1,13 @@
 var mongoose = require('mongoose');
-var familySchema = new mongoose.Schema({  
+var categorySchema = new mongoose.Schema({  
   name: String,
-  description: String,
+  color: String,
+  icon: Number,
   owner: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User'
+    ref: 'Family'
   },
   created: { type: Date, default: Date.now },
   updated: { type: Date, default: Date.now }
 });
-mongoose.model('Family', familySchema);
+mongoose.model('Category', categorySchema);
