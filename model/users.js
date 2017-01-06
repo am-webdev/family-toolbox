@@ -11,15 +11,17 @@ var User = new Schema({
 		index: { unique: true }
 	},
 	password: String,
-	role: { 
-		type: String,
-		enum: ['Child', 'Parent']
-	},
-	family: {
-		type: mongoose.Schema.Types.ObjectId,
-		ref: 'Family'
-	},
-	admin: { type: Boolean, default: false },
+	families: [{
+		family: {
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'Family'
+		},
+		role: { 
+			type: String,
+			enum: ['User', 'Admin']
+		},
+		points: Number
+	}],
 	created: { type: Date, default: Date.now },
 	updated: { type: Date, default: Date.now }
 });
