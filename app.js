@@ -9,7 +9,7 @@ var LocalStrategy = require('passport-local').Strategy;
 var expressSession = require('express-session');
 
 var db        = require('./model/db');
-var task      = require('./model/tasks');
+var task      = require('./model/item');
 var user      = require('./model/users');
 var family    = require('./model/family');
 

@@ -35,7 +35,7 @@ router.route('/')
     //GET all tasks
     .get(function(req, res, next) {
         //retrieve all tasks from Monogo
-        mongoose.model('Task').find({}, function (err, tasks) {
+        mongoose.model('Item').find({type: 'Task'}, function (err, tasks) {
           if (err) {
             return console.error(err);
           } else {
@@ -67,16 +67,17 @@ router.route('/')
         var tmp_completed = req.body.completed;
 
         //call the create function for our database
-        mongoose.model('Task').create({
+        mongoose.model('Item').create({
          name : tmp_name,
          description : tmp_description,
+         type : "Task",
          owner : tmp_owner,
          assignee : tmp_assignee,
          duedate : tmp_duedate,
          completed : tmp_completed,
        }, function (err, task) {
         if (err) {
-          res.send("There was a problem adding the information to the database.");
+          res.send("There was a problem adding the information to the database."+err);
         } else {
                   //task has been created
                   console.log('POST creating new task: ' + task);
@@ -108,7 +109,7 @@ router.route('/')
 router.param('id', function(req, res, next, id) {
     //console.log('validating ' + id + ' exists');
     //find the ID in the Database
-    mongoose.model('Task').findById(id, function (err, task) {
+    mongoose.model('Item').findById(id, function (err, task) {
         //if it isn't found, we are going to repond with 404
         if (err) {
           console.log(id + ' was not found');
@@ -137,7 +138,7 @@ router.param('id', function(req, res, next, id) {
 
 router.route('/:id')
 .get(function(req, res) {
-  mongoose.model('Task').findById(req.id, function (err, task) {
+  mongoose.model('Item').findById(req.id, function (err, task) {
     if (err) {
       console.log('GET Error: There was a problem retrieving: ' + err);
     } else {
@@ -161,7 +162,7 @@ router.route('/:id')
 //GET the individual task by Mongo ID
 router.get('/:id/edit', function(req, res) {
     //search for the task within Mongo
-    mongoose.model('Task').findById(req.id, function (err, task) {
+    mongoose.model('Item').findById(req.id, function (err, task) {
       if (err) {
         console.log('GET Error: There was a problem retrieving: ' + err);
       } else {
@@ -198,7 +199,7 @@ router.put('/:id', function(req, res) {
     var tmp_completed = req.body.completed;
 
    //find the document by ID
-   mongoose.model('Task').findById(req.id, function (err, task) {
+   mongoose.model('Item').findById(req.id, function (err, task) {
             //update it
             task.update({
               name : tmp_name,
@@ -231,7 +232,7 @@ router.put('/:id', function(req, res) {
 //DELETE a task by ID
 router.delete('/:id', function (req, res){
     //find task by ID
-    mongoose.model('Task').findById(req.id, function (err, task) {
+    mongoose.model('Item').findById(req.id, function (err, task) {
       if (err) {
         return console.error(err);
       } else {

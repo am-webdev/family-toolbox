@@ -1,7 +1,12 @@
 var mongoose = require('mongoose');
-var taskSchema = new mongoose.Schema({  
+var itemSchema = new mongoose.Schema({  
   name: String,
   description: String,
+  type: { 
+    type: String,
+    enum: ['Errand', 'Task'],
+    index: true
+  },
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'
@@ -36,4 +41,4 @@ var taskSchema = new mongoose.Schema({
   created: { type: Date, default: Date.now },
   updated: { type: Date, default: Date.now }
 });
-mongoose.model('Task', taskSchema);
+mongoose.model('Item', itemSchema);
