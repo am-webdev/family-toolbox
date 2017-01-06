@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-var taskSchema = new mongoose.Schema({  
+var errandSchema = new mongoose.Schema({  
   name: String,
   description: String,
   owner: {
@@ -36,4 +36,4 @@ var taskSchema = new mongoose.Schema({
   created: { type: Date, default: Date.now },
   updated: { type: Date, default: Date.now }
 });
-mongoose.model('Task', taskSchema);
+mongoose.model('Errand', errandSchema);
