@@ -24,7 +24,7 @@ html( lang="en" )
                 +nav_item( "/tasks" ) My Tasks
                 +nav_item( "/tasks/" ) Family Tasks
                 +nav_item( "/tasks/new" ) New Tasks
-              +nav_item_dropdown( "#" )( label='Hello #{user.username}' )
+              +nav_item_dropdown( "#" )( label= 'Hello '+user.username )
                 +nav_item( "/logout" ) Logout
             if (!user)
               +nav_item( "/login" ) Login
