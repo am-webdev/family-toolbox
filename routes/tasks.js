@@ -41,7 +41,7 @@ router.route('/')
           } else {
                   //respond to both HTML and JSON. JSON responses require 'Accept: application/json;' in the Request Header
                   res.format({
-                      //HTML response will render the index.jade file in the views/tasks folder. We are also setting "tasks" to be an accessible variable in our jade view
+                      //HTML response will render the index.pug file in the views/tasks folder. We are also setting "tasks" to be an accessible variable in our jade view
                       html: function(){
                         res.render('tasks/index', {
                           title: 'All my tasks',
@@ -175,7 +175,7 @@ router.get('/:id/edit', function(req, res) {
                  json: function(){
                    res.json(task);
                  },
-                //HTML response will render the 'edit.jade' template
+                //HTML response will render the 'edit.pug' template
                 html: function(){
                  res.render('tasks/edit', {
                   title: 'task' + task.id,
