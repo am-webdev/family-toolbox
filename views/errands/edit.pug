@@ -1,0 +1,38 @@
+extends ../layout
+
+block content
+    h1.
+        Errand ID #{errand.id}
+    form(action='/errands/'+errand.id,method='POST',name='updateerrand',enctype='application/x-www-form-urlencoded')
+        p Name: 
+            input#inputName(type='text', value= errand.name, name='name')
+        p Description: 
+            textarea#description( name="description", rows="6", cols="66")
+                | #{errand.description}
+        p Are you completed?: 
+            input#completed(type='checkbox', name='completed', checked=('errand.completed'==='true' ? "checked" : undefined))
+        p Owner:
+            input#inputOwner(type='text', value= errand.owner.alias, name='owner', disabled='disabled')
+
+        if typeof(errand.assignee) != 'undefined'
+            - var assgn = errand.assignee.alias
+        else
+            - var assgn = null
+        p Assignee:
+            input#inputAssignee(type='text', value= assgn, name='assignee')
+        p Due Date:
+            input#inputDuedate(type='text', value= errand.duedate, name='duedate')
+        p Created:
+            input#inputCreated(type='text', value= errand.created, name='created', disabled='disabled')
+        p Last Update:
+            input#inputUpdate(type='text', value= errand.updated, name='updated', disabled='disabled')
+        p 
+            input(type='hidden',value='PUT',name='_method')
+        p 
+            button#btnSubmit(type='submit').
+                Save
+
+
+
+
+            

@@ -7,12 +7,11 @@ block content
     br
     form(role='form', action="/register",method="post", style='max-width: 300px;')
       .form-group
-          input.form-control(type='text', name="username", placeholder='Enter Username')
+          input.form-control(type='text', name="username", placeholder='Enter username')
       .form-group
-          input.form-control(type='email', name="email", placeholder='Enter E-Mail Address')
+          input.form-control(type='text', name="alias", placeholder='Enter alias')
       .form-group
         input.form-control(type='password', name="password", placeholder='Password')
       button.btn.btn-primary(type='submit') Submit
-      &nbsp;
       a(href='/')
         button.btn.btn-default(type="button") Cancel

@@ -5,8 +5,12 @@ block content
 		Task #{task.id}
 	p Name: #{task.name}
 	p description: #{task.description}
-	p owner: #{task.owner.username}
-	p assignee: #{task.assignee}
+	p owner: #{task.owner.alias}
+	if typeof(task.assignee) != 'undefined'
+		- var assgn = task.assignee.alias
+	else
+		- var assgn = 'unassigned'
+	p assignee: #{assgn}
 	p duedate: #{task.duedate}
 	p completed: #{task.completed}
 	p 
@@ -15,3 +19,13 @@ block content
 			input(type='hidden',value='DELETE',name='_method')
 			button(type='submit').
 				Delete
+		if(!task.completed)
+			form(action='/tasks/'+task._id+'/resolve',method='POST',enctype='application/x-www-form-urlencoded')
+				input(type='hidden',value='PUT',name='_method')
+				button(type='submit').
+					Resolve
+		else
+			form(action='/tasks/'+task._id+'/reopen',method='POST',enctype='application/x-www-form-urlencoded')
+				input(type='hidden',value='PUT',name='_method')
+				button(type='submit').
+					Incomplete

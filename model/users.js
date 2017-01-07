@@ -1,16 +1,17 @@
 var mongoose = require('mongoose');
+var crypto = require('crypto');
 var Schema = mongoose.Schema;
 var passportLocalMongoose = require('passport-local-mongoose');
 
 var User = new Schema({
-	username: String,
-	email: {
-		type: Date,
-		lowercase: true,
-		trim: true,
-		index: { unique: true }
+	username: {
+		type: String,
+		unique: true
 	},
-	password: String,
+	password: {
+		type: String
+	},
+	alias: String,
 	families: [{
 		family: {
 			type: mongoose.Schema.Types.ObjectId,
@@ -18,7 +19,8 @@ var User = new Schema({
 		},
 		role: { 
 			type: String,
-			enum: ['User', 'Admin']
+			enum: ['User', 'Admin'],
+			dafault: "User"
 		},
 		points: Number
 	}],
@@ -27,5 +29,6 @@ var User = new Schema({
 });
 
 User.plugin(passportLocalMongoose);
+
 
 module.exports = mongoose.model('User', User);

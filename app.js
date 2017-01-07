@@ -13,9 +13,11 @@ var task      = require('./model/item');
 var user      = require('./model/users');
 var family    = require('./model/family');
 
-var routes  = require('./routes/index');
-var tasks   = require('./routes/tasks');
-var users   = require('./routes/users');
+var routes    = require('./routes/index');
+var tasks     = require('./routes/tasks');
+var errands   = require('./routes/errands');
+var users     = require('./routes/users');
+var families  = require('./routes/families');
 
 var app = express();
 
@@ -43,6 +45,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', routes);
 app.use('/users', users);
 app.use('/tasks', tasks);
+app.use('/errands', errands);
+app.use('/families', families);
 
 // passport config
 passport.use(new LocalStrategy(user.authenticate()));

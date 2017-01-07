@@ -1,0 +1,21 @@
+extends ../layout
+
+block content
+	h1.
+		Errand #{errand.id}
+	p Name: #{errand.name}
+	p description: #{errand.description}
+	p owner: #{errand.owner.alias}
+	if typeof(errand.assignee) != 'undefined'
+		- var assgn = errand.assignee.alias
+	else
+		- var assgn = 'unassigned'
+	p assignee: #{assgn}
+	p duedate: #{errand.duedate}
+	p completed: #{errand.completed}
+	p 
+		a(href='/errands/'+errand.id+'/edit') Edit
+		form(action='/errands/'+errand._id,method='POST',enctype='application/x-www-form-urlencoded')
+			input(type='hidden',value='DELETE',name='_method')
+			button(type='submit').
+				Delete

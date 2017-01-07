@@ -1,0 +1,10 @@
+extends ../layout
+
+block content
+    h2.
+         #{title}
+    +listGroup("links")
+        each errand, i in errands
+            a.list-group-item( href='/errands/'+errand.id )
+                h4.list-group-item-heading #{errand.name}
+                p.list-group-item-text #{errand.description}

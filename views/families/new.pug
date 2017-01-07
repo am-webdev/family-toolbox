@@ -1,0 +1,13 @@
+extends ../layout
+
+block content
+    h1.
+        #{title}
+    form#formAddFamily(name="addfamily",method="post",action="/families")
+        p Name: 
+            input#inputName(type="text", placeholder="Your Family Name", name="name")
+        p Description:
+            input#inputDescription(type="text", placeholder="Enter Description", name="description")
+        p
+            button#btnSubmit(type="submit") submit
+

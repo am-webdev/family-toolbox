@@ -1,0 +1,10 @@
+extends ../layout
+
+block content
+    h2.
+         #{title}
+    +listGroup("links")
+        each fam, i in families
+            a.list-group-item( href='/families/'+fam._id )
+                h4.list-group-item-heading #{fam.name}
+                p.list-group-item-text #{fam.description}
