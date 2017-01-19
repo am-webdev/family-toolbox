@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-if (app.get('env') === 'local') {
+if (process.env.MONGOLAB_URI != '') {
 	mongoose.connect('mongodb://localhost/familytoolbox');
 } else {
 	mongoose.connect(process.env.MONGOLAB_URI);
