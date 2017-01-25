@@ -9,19 +9,21 @@ var LocalStrategy = require('passport-local').Strategy;
 var expressSession = require('express-session');
 
 var db        = require('./model/db');
-var task      = require('./model/tasks');
+var task      = require('./model/item');
 var user      = require('./model/users');
 var family    = require('./model/family');
 
-var routes  = require('./routes/index');
-var tasks   = require('./routes/tasks');
-var users   = require('./routes/users');
+var routes    = require('./routes/index');
+var tasks     = require('./routes/tasks');
+var errands   = require('./routes/errands');
+var users     = require('./routes/users');
+var families  = require('./routes/families');
 
 var app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+app.set('view engine', 'pug');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -43,6 +45,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', routes);
 app.use('/users', users);
 app.use('/tasks', tasks);
+app.use('/errands', errands);
+app.use('/families', families);
 
 // passport config
 passport.use(new LocalStrategy(user.authenticate()));

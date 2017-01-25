@@ -22,9 +22,17 @@ html( lang="en" )
             if (user)
               +nav_item_dropdown( "#" )( label='Tasks' )
                 +nav_item( "/tasks" ) My Tasks
-                +nav_item( "/tasks/" ) Family Tasks
+                +nav_item( "/families/tasks/" ) Family Tasks
                 +nav_item( "/tasks/new" ) New Tasks
-              +nav_item_dropdown( "#" )( label='Hello #{user.username}' )
+              +nav_item_dropdown( "#" )( label='Errands' )
+                +nav_item( "/errands" ) My Errands
+                +nav_item( "/families/errands/" ) Family Errands
+                +nav_item( "/errands/new" ) New Errands
+              +nav_item_dropdown( "#" )( label='Family' )
+                +nav_item( "/families" ) My Family
+                +nav_item( "/families/new" ) Create new Family
+              +nav_item_dropdown( "#" )( label= 'Hello '+user.alias )
+                +nav_item( "/users/profile" ) Edit Profile
                 +nav_item( "/logout" ) Logout
             if (!user)
               +nav_item( "/login" ) Login

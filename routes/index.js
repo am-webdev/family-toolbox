@@ -4,6 +4,7 @@ var User            = require('../model/users')
 var passport        = require('passport');  // provides user auth middelware
 var bodyParser      = require('body-parser'); //parses information from POST
 var methodOverride  = require('method-override'); //used to manipulate POST
+var LocalStrategy   = require('passport-local').Strategy;
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -15,7 +16,10 @@ router.get('/register', function(req, res) {
 });
 
 router.post('/register', function(req, res, next) {
-    User.register(new User({ username : req.body.username }), req.body.password, function(err, user) {
+    User.register(new User({username : req.body.username, alias: req.body.alias}), req.body.password, function(err, user) {
+        console.log(req.body.username);
+        console.log(req.body.alias);
+        console.log(req.body.password);
         if (err) {
           return res.render('register', { error : err.message });
         }
