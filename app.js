@@ -7,6 +7,7 @@ var bodyParser = require('body-parser');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var expressSession = require('express-session');
+var newrelic = require('newrelic');
 
 var db        = require('./model/db');
 var task      = require('./model/item');
