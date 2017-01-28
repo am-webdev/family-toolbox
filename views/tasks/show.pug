@@ -17,19 +17,17 @@ block content
 		- var ddate = ''
 	p duedate: #{ddate}
 	p completed: #{task.completed}
-	p 
-		a(href='/tasks/'+task.id+'/edit') Edit
-		form(action='/tasks/'+task._id,method='POST',enctype='application/x-www-form-urlencoded')
-			input(type='hidden',value='DELETE',name='_method')
-			button(type='submit').
-				Delete
+	p
+		a(role='button', class='btn btn-sm btn-primary', href='/tasks/'+task._id+'/edit') Edit
 		if(task.completed)
 			form(action='/tasks/'+task._id+'/reopen',method='POST',enctype='application/x-www-form-urlencoded')
 				input(type='hidden',value='PUT',name='_method')
-				button(type='submit').
-					Incomplete
+				button(type='submit', class='btn btn-sm btn-warning') Incomplete
 		else
 			form(action='/tasks/'+task._id+'/resolve',method='POST',enctype='application/x-www-form-urlencoded')
 				input(type='hidden',value='PUT',name='_method')
-				button(type='submit').
-					Resolve
+				button(type='submit', class='btn btn-sm btn-success') Resolve
+	p
+		form(action='/tasks/'+task._id,method='POST',enctype='application/x-www-form-urlencoded')
+			input(type='hidden',value='DELETE',name='_method')
+			button(type='submit', class='btn btn-sm btn-danger') Delete

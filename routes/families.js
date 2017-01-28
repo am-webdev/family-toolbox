@@ -217,4 +217,32 @@ router.get('/:id/edit', function(req, res) {
       }).populate("owner").populate("members");
   });
 
+//DELETE a family by ID
+router.delete('/:id', function (req, res){
+  mongoose.model('Family').findById(req.id, function (err, family) {
+    if (err) {
+      return console.error(err);
+    } else {
+          family.remove(function (err, family) {
+            if (err) {
+              return console.error(err);
+            } else {
+                  console.log('DELETE removing ID: ' + family.id);
+                  res.format({
+                      //HTML return
+                      html: function(){
+                       res.redirect("/families");
+                     },
+                       //JSON return
+                       json: function(){
+                         res.json({message : 'deleted',
+                           item : family
+                         });
+                       }
+                     });
+                }
+              });
+        }
+      }).populate("owner").populate("assignee");
+});
 module.exports = router;
