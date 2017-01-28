@@ -54,6 +54,7 @@ router.route('/')
                           "families_userrole": req.user.populate('families'),
                           "families" : families
                         });
+                        console.log(req.user.populate('families'))
                       },
                     //JSON response will show all tasks in JSON format
                     json: function(){
@@ -217,6 +218,7 @@ router.get('/:id/edit', function(req, res) {
       }).populate("owner").populate("members");
   });
 
+
 //DELETE a family by ID
 router.delete('/:id', function (req, res){
   mongoose.model('Family').findById(req.id, function (err, family) {
@@ -244,5 +246,15 @@ router.delete('/:id', function (req, res){
               });
         }
       }).populate("owner").populate("assignee");
+  mongoose.model('User').findByIdAndUpdate(
+            req.user._id,
+            {$pull: {families: {
+                family: req.id,
+              }}},
+            {safe: true, upsert: true},
+            function(err, user) {
+              console.log(err);
+            }
+          );
 });
 module.exports = router;

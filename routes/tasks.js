@@ -173,18 +173,15 @@ router.get('/:id/edit', function(req, res) {
           for (i = 0; i < req.user.families.length; i++) { 
             familiesIDs.push(new mongoose.Types.ObjectId( req.user.families[i].family ));
           }
-          //var families;
           mongoose.model('Family').find({
               '_id': { $in: familiesIDs}
           }, function(err, families){
-            console.log("find families:");
-            console.log(families);
             res.format({
-                   //JSON response will return the JSON output
+                   //JSON response
                    json: function(){
                      res.json(task);
                    },
-                  //HTML response will render the 'edit.pug' template
+                  //HTML response
                   html: function(){
                    res.render('tasks/edit', {
                     title: 'task' + task.id,
