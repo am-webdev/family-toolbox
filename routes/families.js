@@ -116,5 +116,105 @@ router.route('/')
       res.render('families/new', { title: 'Add New Family' });
     });
 
+// route middleware to validate :id
+router.param('id', function(req, res, next, id) {
+    mongoose.model('Family').findById(id, function (err, task) {
+        if (err) {
+          console.log(id + ' was not found');
+          res.status(404)
+          var err = new Error('Not Found');
+          err.status = 404;
+          res.format({
+            html: function(){
+              next(err);
+            },
+            json: function(){
+             res.json({message : err.status  + ' ' + err});
+           }
+         });
+      } else {
+            req.id = id;
+            next(); 
+          } 
+        });
+  });
+
+router.route('/:id').get(function(req, res) {
+  mongoose.model('Family').findById(req.id, function (err, family) {
+    if (err) {
+      console.log('GET Error: There was a problem retrieving: ' + err);
+    } else {
+      console.log('GET Retrieving ID: ' + req.id);
+        res.format({
+          json: function(){
+            res.json(family);
+          },
+          html: function(){
+            res.render('families/show', {
+              "family" : family
+            });
+          }
+        });
+      }
+    }).populate("owner").populate("members");
+});
+
+router.route('/:id').put(function(req, res) {
+    var tmp_name = req.body.name;
+    var tmp_description = req.body.description;
+
+   //find the document by ID
+   mongoose.model('Family').findById(req.id, function (err, family) {
+            //update it
+            family.update({
+              name : tmp_name,
+              description : tmp_description,
+              updated : Date.now()
+            }, function (err, familyID) {
+              if (err) {
+                res.send("There was a problem updating the information to the database: " + err);
+              } 
+              else {
+                      //HTML responds
+                      res.format({
+                        html: function(){
+                         res.redirect("/families/" + family.id);
+                       },
+                         //JSON responds
+                         json: function(){
+                           res.json(family);
+                         }
+                       });
+                    }
+                  })
+          }).populate("owner").populate("member");
+ });
+
+//GET the individual family by Mongo ID
+router.get('/:id/edit', function(req, res) {
+    //search for the family within Mongo
+    mongoose.model('Family').findById(req.id, function (err, family) {
+      if (err) {
+        console.log('GET Error: There was a problem retrieving: ' + err);
+      } else {
+            //Return the family
+            console.log('GET Retrieving ID: ' + family.id);
+            console.log(family);
+          res.format({
+                 //JSON response will return the JSON output
+                 json: function(){
+                   res.json(family);
+                 },
+                //HTML response will render the 'edit.pug' template
+                html: function(){
+                 res.render('families/edit', {
+                  title: 'family' + family.id,
+                  "family" : family
+                });
+               }
+             });
+        }
+      }).populate("owner").populate("members");
+  });
 
 module.exports = router;

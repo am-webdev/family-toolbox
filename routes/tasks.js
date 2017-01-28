@@ -35,7 +35,10 @@ router.route('/')
     //GET all tasks
     .get(function(req, res, next) {
         //retrieve all tasks from Monogo
-        mongoose.model('Item').find({type: 'Task'}, function (err, tasks) {
+        mongoose.model('Item').find({
+          type: 'Task',
+          $or:[ {'owner': req.user.id}, {'assignee': req.user.id} ] 
+        }, function (err, tasks) {
           if (err) {
             return console.error(err);
           } else {
@@ -166,24 +169,31 @@ router.get('/:id/edit', function(req, res) {
       if (err) {
         console.log('GET Error: There was a problem retrieving: ' + err);
       } else {
-            //Return the task
-            console.log('GET Retrieving ID: ' + task.id);
-            //format the date properly for the value to show correctly in our edit form
-          //var tasktks = task.dob.toISOString();
-          //tasktks = tasktks.substring(0, tasktks.indexOf('T'))
-          res.format({
-                 //JSON response will return the JSON output
-                 json: function(){
-                   res.json(task);
-                 },
-                //HTML response will render the 'edit.pug' template
-                html: function(){
-                 res.render('tasks/edit', {
-                  title: 'task' + task.id,
-                  "task" : task
-                });
-               }
-             });
+          var familiesIDs = [];
+          for (i = 0; i < req.user.families.length; i++) { 
+            familiesIDs.push(new mongoose.Types.ObjectId( req.user.families[i].family ));
+          }
+          //var families;
+          mongoose.model('Family').find({
+              '_id': { $in: familiesIDs}
+          }, function(err, families){
+            console.log("find families:");
+            console.log(families);
+            res.format({
+                   //JSON response will return the JSON output
+                   json: function(){
+                     res.json(task);
+                   },
+                  //HTML response will render the 'edit.pug' template
+                  html: function(){
+                   res.render('tasks/edit', {
+                    title: 'task' + task.id,
+                    "task" : task,
+                    "families": families
+                  });
+                 }
+               });
+          })
         }
       }).populate("owner").populate("assignee");
   });
@@ -193,14 +203,9 @@ router.put('/:id', function(req, res) {
     // Get our REST or form values. These rely on the "name" attributes
     var tmp_name = req.body.name;
     var tmp_description = req.body.description;
-    //var tmp_owner = req.body.owner;
-    var tmp_assignee = req.body.assignee;
+    var tmp_assignee = req.body.assignee || new mongoose.Types.ObjectId();
     var tmp_duedate = req.body.duedate;
     var tmp_completed = req.body.completed;
-
-    if (tmp_assignee == '') {
-      tmp_assignee = null;
-    }
 
    //find the document by ID
    mongoose.model('Item').findById(req.id, function (err, task) {
@@ -208,9 +213,8 @@ router.put('/:id', function(req, res) {
             task.update({
               name : tmp_name,
               description : tmp_description,
-              owner : tmp_owner,
-              assignee : tmp_assignee,
-              duedate : tmp_duedate,
+              assignee: tmp_assignee,
+              duedate: tmp_duedate,
               completed : tmp_completed,
               updated : Date.now()
             }, function (err, taskID) {

@@ -67,3 +67,10 @@ mixin listHeading
 mixin listText
     .list-group-item-text
         block
+
+mixin prettyDate(dateString)
+    -var date = new Date(dateString);
+    -var d = date.getDate();
+    -var m = date.getMonth()];
+    -var y = date.getFullYear();
+    -return y+'-'+m+'-'+d;
