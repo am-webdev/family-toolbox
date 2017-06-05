@@ -34,19 +34,34 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/profile', function(req, res, next) {
-	res.format({
-		//HTML response will render the index.pug file in the views/tasks folder. We are also setting "tasks" to be an accessible variable in our jade view
-		html: function(){
-			res.render('users/edit', {
-				title: 'Update user Porfile',
-				"user" : req.user
-			});
-		},
-		//JSON response will show all tasks in JSON format
-		json: function(){
-			res.json(req.user);
-		}
-	});
+  //retrieve all families from Monogo
+  var userFamilyIds = [];
+  for (var crnFam in req.user.families) {
+    userFamilyIds.push(req.user.families[crnFam].family);
+  }
+  mongoose.model('Family').find({
+            '_id': { $in: userFamilyIds}
+        }, function (err, families) {
+          if (err) {
+            return console.error(err);
+          } else {
+          	res.format({
+          		//HTML response will render the index.pug file in the views/tasks folder. We are also setting "tasks" to be an accessible variable in our jade view
+          		html: function(){
+          			res.render('users/edit', {
+          				title: 'Update user Porfile',
+          				"user" : req.user,
+                  "families_userrole": req.user.populate('families.family'),
+                  "families" : families
+          			});
+          		},
+          		//JSON response will show all tasks in JSON format
+          		json: function(){
+          			res.json(req.user);
+          		}
+          	});
+          };
+  });
 });
 
 // route middleware to validate :id
