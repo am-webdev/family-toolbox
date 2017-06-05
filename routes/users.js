@@ -39,6 +39,7 @@ router.get('/profile', function(req, res, next) {
           if (err) {
             return console.error(err);
           } else {
+            console.log(families);
           	res.format({
           		//HTML response will render the index.pug file in the views/tasks folder. We are also setting "tasks" to be an accessible variable in our jade view
           		html: function(){

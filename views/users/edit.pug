@@ -10,15 +10,17 @@ block content
             a.list-group-item()
                 h4.list-group-item-heading #{fam.name}
                 p.list-group-item-text
-                    each test, i in families_userrole.families
-                            if (test.family==fam._id)
-                                #{fam.description} #{test.family} #{fam._id}
+                    p Description: #{fam.description}
+                    each fam_details, i in families_userrole.families
+                        - var fam1 = new String(fam_details.family);
+                        - var famA = new String(fam._id);
+                        if (fam1.toString() == famA.toString())
+                            p Points: #{fam_details.points}
 
-    
-    each test, i in families_userrole.families
-            p
-                #{test.family}
-
+    h2.
+        User Settings
+    h3.
+        Change Display Name
     if(saved)
         #{saved}
     form(action='/users/profile/'+user.id,method='POST',name='updateuser',enctype='application/x-www-form-urlencoded')
