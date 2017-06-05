@@ -28,12 +28,12 @@ router.use(methodOverride(function(req, res){
   }
 }));
 
-//build the REST operations at the base for tasks
-//this will be accessible from http://127.0.0.1:3000/tasks if the default route for / is left unchanged
+//build the REST operations at the base for families
+//this will be accessible from http://127.0.0.1:3000/families if the default route for / is left unchanged
 router.route('/')
-    //GET all tasks
+    //GET all families
     .get(function(req, res, next) {
-        //retrieve all tasks from Monogo
+        //retrieve all families from Monogo
         var userFamilyIds = [];
         for (var crnFam in req.user.families) {
           userFamilyIds.push(req.user.families[crnFam].family);
@@ -47,15 +47,15 @@ router.route('/')
           } else {
                   //respond to both HTML and JSON. JSON responses require 'Accept: application/json;' in the Request Header
                   res.format({
-                      //HTML response will render the index.pug file in the views/tasks folder. We are also setting "tasks" to be an accessible variable in our jade view
+                      //HTML response will render the index.pug file in the views/families folder. We are also setting "families" to be an accessible variable in our jade view
                       html: function(){
                         res.render('families/index', {
                           title: 'All my families',
-                          "families_userrole": req.user.populate('families'),
+                          "families_userrole": req.user.populate('families').populate('families'),
                           "families" : families
                         });
                       },
-                    //JSON response will show all tasks in JSON format
+                    //JSON response will show all families in JSON format
                     json: function(){
                       res.json(families);
                     }

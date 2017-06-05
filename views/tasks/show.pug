@@ -6,6 +6,8 @@ block content
 	p Name: #{task.name}
 	p description: #{task.description}
 	p owner: #{task.owner.alias}
+	p points: #{task.points.receive}
+	p votes: #{task.votes} You need #{task.points.receive} to vote
 	if typeof(task.assignee) != 'undefined'
 		- var assgn = task.assignee.alias
 	else
