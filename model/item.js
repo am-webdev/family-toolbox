@@ -15,6 +15,10 @@ var itemSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'
   },
+  family: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Family'
+  },  
   duedate: { type: Date },
   completed: { type: Boolean, default: false },
   priority: { 

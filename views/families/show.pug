@@ -1,0 +1,14 @@
+extends ../layout
+
+block content
+	h1.
+		Family #{family.id}
+	p Name: #{family.name}
+	p description: #{family.description}
+	p owner: #{family.owner.alias}
+	p 
+		a(role='button', class='btn btn-sm btn-primary', href='/families/'+family._id+'/edit') Edit
+	p
+		form(action='/families/'+family._id,method='POST',enctype='application/x-www-form-urlencoded')
+			input(type='hidden',value='DELETE',name='_method',)
+			button(type='submit', class='btn btn-sm btn-danger') Delete

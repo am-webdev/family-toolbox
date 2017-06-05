@@ -1,0 +1,23 @@
+extends ../layout
+
+block content
+    h1.
+        Family ID #{family.id}
+    form(action='/families/'+family.id,method='POST',name='updatefamily',enctype='application/x-www-form-urlencoded')
+        p Name: 
+            input#inputName(type='text', value= family.name, name='name')
+        p Description: 
+            textarea#description( name="description", rows="6", cols="66")
+                | #{family.description}
+        p Created: #{family.created}
+        p Last Update: #{family.updated}
+        p 
+            input(type='hidden',value='PUT',name='_method')
+        p 
+            button#btnSubmit(type='submit').
+                Save
+
+
+
+
+            

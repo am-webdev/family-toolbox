@@ -35,7 +35,10 @@ router.route('/')
     //GET all errands
     .get(function(req, res, next) {
         //retrieve all errands from Monogo
-        mongoose.model('Item').find({type: 'Errand'}, function (err, errands) {
+        mongoose.model('Item').find({
+          type: 'Errand',
+          $or:[ {'owner': req.user.id}, {'assignee': req.user.id} ]
+        }, function (err, errands) {
           if (err) {
             return console.error(err);
           } else {
@@ -100,10 +103,10 @@ router.route('/')
 
 
 
-    /* GET New errand page. */
-    router.get('/new', function(req, res) {
-      res.render('errands/new', { title: 'Add New errand' });
-    });
+/* GET New errand page. */
+router.get('/new', function(req, res) {
+  res.render('errands/new', { title: 'Add New errand' });
+});
 
 // route middleware to validate :id
 router.param('id', function(req, res, next, id) {
@@ -143,8 +146,6 @@ router.route('/:id')
       console.log('GET Error: There was a problem retrieving: ' + err);
     } else {
       console.log('GET Retrieving ID: ' + req.id);
-        //var errandtks = errandtks.toISOString();
-        //errandtks = errandtks.substring(0, errandtks.indexOf('T'))
         res.format({
           json: function(){
             res.json(errand);
@@ -168,9 +169,6 @@ router.get('/:id/edit', function(req, res) {
       } else {
             //Return the errand
             console.log('GET Retrieving ID: ' + errand.id);
-            //format the date properly for the value to show correctly in our edit form
-          //var errandtks = errand.dob.toISOString();
-          //errandtks = errandtks.substring(0, errandtks.indexOf('T'))
           res.format({
                  //JSON response will return the JSON output
                  json: function(){
@@ -190,10 +188,8 @@ router.get('/:id/edit', function(req, res) {
 
 //PUT to update a errand by ID
 router.put('/:id', function(req, res) {
-    // Get our REST or form values. These rely on the "name" attributes
     var tmp_name = req.body.name;
     var tmp_description = req.body.description;
-    var tmp_owner = req.body.owner;
     var tmp_assignee = req.body.assignee;
     var tmp_duedate = req.body.duedate;
     var tmp_completed = req.body.completed;
@@ -204,7 +200,6 @@ router.put('/:id', function(req, res) {
             errand.update({
               name : tmp_name,
               description : tmp_description,
-              owner : tmp_owner,
               assignee : tmp_assignee,
               duedate : tmp_duedate,
               completed : tmp_completed,
@@ -214,12 +209,12 @@ router.put('/:id', function(req, res) {
                 res.send("There was a problem updating the information to the database: " + err);
               } 
               else {
-                      //HTML responds by going back to the page or you can be fancy and create a new view that shows a success page.
+                      //HTML responds
                       res.format({
                         html: function(){
                          res.redirect("/errands/" + errand.id);
                        },
-                         //JSON responds showing the updated values
+                         //JSON responds
                          json: function(){
                            res.json(errand);
                          }
@@ -244,11 +239,11 @@ router.delete('/:id', function (req, res){
                     //Returning success messages saying it was deleted
                     console.log('DELETE removing ID: ' + errand.id);
                     res.format({
-                        //HTML returns us back to the main page, or you can create a success page
+                        //HTML return
                         html: function(){
                          res.redirect("/errands");
                        },
-                         //JSON returns the item with the message that is has been deleted
+                         //JSON return
                          json: function(){
                            res.json({message : 'deleted',
                              item : errand

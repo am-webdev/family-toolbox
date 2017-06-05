@@ -1,35 +1,77 @@
 extends ../layout
 
 block content
-    h1.
-        task ID #{task.id}
-    form(action='/tasks/'+task.id,method='POST',name='updatetask',enctype='application/x-www-form-urlencoded')
-        p Name: 
-            input#inputName(type='text', value= task.name, name='name')
-        p Description: 
-            textarea#description( name="description", rows="6", cols="66")
-                | #{task.description}
-        p Are you completed?: 
-            input#completed(type='checkbox', name='completed', checked=('task.completed'==='true' ? "checked" : undefined))
-        p Owner:
-            input#inputOwner(type='text', value= task.owner.alias, name='owner', disabled='disabled')
-
-        if typeof(task.assignee) != 'undefined'
-            - var assgn_value = task.assignee.alias
-        else
-            - var assgn_value = ''
-            - var assgn_placeholder = 'unassigned'
-        p Assignee:
-            input#inputAssignee(type='text', value= assgn, name='assignee', placeholder= assgn_placeholder)
-        p Due Date:
-            input#inputDuedate(type='text', value= task.duedate, name='duedate')
-        p Created: #{task.created}
-        p Last Update: #{task.updated}
-        p 
-            input(type='hidden',value='PUT',name='_method')
-        p 
-            button#btnSubmit(type='submit').
-                Save
+    div(class='container')
+        h1.
+            #{task.name}
+        form(action='/tasks/'+task.id,method='POST',name='updatetask',enctype='application/x-www-form-urlencoded')
+            div(class='form-group row')
+                label(for='name', class='col-sm-2 col-form-label') ID
+                div(class='col-sm-10')
+                    | #{task.id}
+            div(class='form-group row')
+                label(for='name', class='col-sm-2 col-form-label') Name
+                div(class='col-sm-10')
+                    input#inputName(type='text', value= task.name, name='name')
+            div(class='form-group row')
+                label(for='description', class='col-sm-2 col-form-label') Description
+                div(class='col-sm-10')
+                    textarea#description( name="description", rows="6", cols="66")
+                        | #{task.description}
+            div(class='form-group row')
+                label(for='name', class='col-sm-2 col-form-label') Completed
+                div(class='col-sm-10')
+                    div(class='form-check')
+                        label(class='form-check-label')
+                            input#completed(type='checkbox', name='completed', checked=('task.completed'==='true' ? "checked" : undefined))
+            div(class='form-group row')
+                label(for='Owner', class='col-sm-2 col-form-label') Owner
+                div(class='col-sm-10')
+                    input#inputOwner(type='text', value= task.owner.alias, name='owner', disabled='disabled')
+            div(class='form-group row')
+                label(for='name', class='col-sm-2 col-form-label') Completed
+                div(class='col-sm-10')
+                    div(class='form-check')
+                        label(class='form-check-label')
+                            input#completed(type='checkbox', name='completed', checked=('task.completed'==='true' ? "checked" : undefined))
+            fieldset(class='form-group row')
+                label(class='col-sm-2 col-form-label') Families
+                div(class='col-sm-10')
+                    div(class='form-check')
+                        label(class='form-check-label')
+                            input#inputFamily(class='form-check-input', type='radio', name='itemfamily', value='-1')
+                            |  None
+                    each family in families
+                        div(class='form-check')
+                            label(class='form-check-label')
+                                input#inputFamily(class='form-check-input', type='radio', name='itemfamily', value= family.id)
+                                |  #{family.name}
+            - var assgn_placeholder = Unassigned
+            if typeof(task.assignee) != 'undefined'
+                if task.assignee != null
+                    - var assgn = task.assignee.alias
+            div(class='form-group row')
+                label(for='assignee', class='col-sm-2 col-form-label') Assignee
+                div(class='col-sm-10')
+                    input#inputAssignee(type='text', value= assgn, name='assignee', placeholder= assgn_placeholder)     
+            div(class='form-group row')
+                label(for='duedate', class='col-sm-2 col-form-label') Due Date
+                div(class='col-sm-10')
+                    input#inputDuedate(type='date' class='form-control', value= prettyDate(task.duedate), name='duedate', data-date-format='yyyy-mm-dd', placeholder="Enter a due date")
+            div(class='form-group row')
+                label(for='name', class='col-sm-2 col-form-label') Created
+                div(class='col-sm-10')
+                    | #{task.created}
+            div(class='form-group row')
+                label(for='name', class='col-sm-2 col-form-label') Last Update
+                div(class='col-sm-10')
+                    | #{task.updated}
+            p 
+                input(type='hidden',value='PUT',name='_method')
+            
+            div(class='form-group row')
+                div(class='offset-sm-2 col-sm-10')
+                    button#btnSubmit(type='submit', class='btn btn-primary') Save
 
 
 

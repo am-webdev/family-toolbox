@@ -2,32 +2,34 @@ extends ../layout
 
 block content
 	h1.
-		Task #{task.id}
-	p Name: #{task.name}
+		Task #{task.name}
+	p Id: #{task.id}
 	p description: #{task.description}
 	p owner: #{task.owner.alias}
 	p points: #{task.points.receive}
 	p votes: #{task.votes} You need #{task.points.receive} to vote
+	- var assgn = 'unassigned'
 	if typeof(task.assignee) != 'undefined'
-		- var assgn = task.assignee.alias
-	else
-		- var assgn = 'unassigned'
+		if task.assignee != null
+			- assgn = task.assignee.alias
 	p assignee: #{assgn}
-	p duedate: #{task.duedate}
+	if typeof(task.duedate) != 'undefined'
+		- var ddate = task.duedate
+	else
+		- var ddate = ''
+	p duedate: #{ddate}
 	p completed: #{task.completed}
-	p 
-		a(href='/tasks/'+task.id+'/edit') Edit
-		form(action='/tasks/'+task._id,method='POST',enctype='application/x-www-form-urlencoded')
-			input(type='hidden',value='DELETE',name='_method')
-			button(type='submit').
-				Delete
-		if(!task.completed)
-			form(action='/tasks/'+task._id+'/resolve',method='POST',enctype='application/x-www-form-urlencoded')
-				input(type='hidden',value='PUT',name='_method')
-				button(type='submit').
-					Resolve
-		else
+	p
+		a(role='button', class='btn btn-sm btn-primary', href='/tasks/'+task._id+'/edit') Edit
+		if(task.completed)
 			form(action='/tasks/'+task._id+'/reopen',method='POST',enctype='application/x-www-form-urlencoded')
 				input(type='hidden',value='PUT',name='_method')
-				button(type='submit').
-					Incomplete
+				button(type='submit', class='btn btn-sm btn-warning') Incomplete
+		else
+			form(action='/tasks/'+task._id+'/resolve',method='POST',enctype='application/x-www-form-urlencoded')
+				input(type='hidden',value='PUT',name='_method')
+				button(type='submit', class='btn btn-sm btn-success') Resolve
+	p
+		form(action='/tasks/'+task._id,method='POST',enctype='application/x-www-form-urlencoded')
+			input(type='hidden',value='DELETE',name='_method')
+			button(type='submit', class='btn btn-sm btn-danger') Delete
