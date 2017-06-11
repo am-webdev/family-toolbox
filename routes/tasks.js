@@ -237,32 +237,62 @@ router.put('/:id', function(req, res) {
 //PUT to resolve a task by ID
 router.put('/:id/resolve', function(req, res) {
 
-   //find the document by ID
-   mongoose.model('Item').findById(req.id, function (err, task) {
-            //update it
-            task.update({
-              completed: true,
-              assignee: req.user._id,
-              updated : Date.now()
-            }, function (err, taskID) {
-              if (err) {
-                res.send("There was a problem updating the information to the database: " + err);
-              } 
-              else {
-                      //HTML responds by going back to the page or you can be fancy and create a new view that shows a success page.
-                      res.format({
-                        html: function(){
-                         res.redirect("/tasks/" + task.id);
-                       },
-                         //JSON responds showing the updated values
-                         json: function(){
-                           res.json(task);
-                         }
-                       });
-                    }
-                  })
-          }).populate("owner").populate("assignee");
- });
+  //find and update document by ID
+  var pointToReceive = 0;
+  var relatedFamily = "";
+  var relatedFamily_id = "";
+  var oldpoints = 0;
+  mongoose.model('Item').findById(req.id, function (err, task) {
+    // Save point the user should receive
+    pointToReceive = task.points.receive;
+    relatedFamily = task.family;
+    //update it
+    task.update({
+      completed: true,
+      assignee: req.user._id,
+      updated : Date.now()
+    }, function (err, taskID) {
+      if (err) {
+        res.send("There was a problem updating the information to the database: " + err);
+      } 
+      else {
+        // Add points to the user profile
+        mongoose.model('User').findById(req.user._id, function (err, user) {
+          if (err)
+            res.send(err);
+
+          var iFamCounter
+
+          for (iFamCounter = 0; iFamCounter < user.families.length; iFamCounter++) {
+            fam = user.families[iFamCounter];
+            if(fam.family == relatedFamily.toString()) {
+              oldpoints = fam.points;
+              relatedFamily_id = fam._id;
+              // Save points within User Model that is saved later on
+              user.families[iFamCounter].points = oldpoints + pointToReceive;
+            }
+          }
+          // Save updated user model
+          user.save(function(err) {
+            if (err)
+                return res.send(err);
+          });
+      }).populate("owner").populate("assignee");
+      //HTML responds by going back to the page or you can be fancy and create a new view that shows a success page.
+      res.format({
+        html: function(){
+         res.redirect("/tasks/" + task.id);
+       },
+         //JSON responds showing the updated values
+         json: function(){
+           res.json(task);
+         }
+       });
+    }
+  })
+  }).populate("owner").populate("assignee");
+});
+
 
 //PUT to reopen a task by ID
 router.put('/:id/reopen', function(req, res) {
