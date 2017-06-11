@@ -1,8 +1,8 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-}
+.top5 { margin-top:5px; }
+.top7 { margin-top:7px; }
+.top10 { margin-top:10px; }
+.top15 { margin-top:15px; }
+.top17 { margin-top:17px; }
+.top30 { margin-top:30px; }
 
-a {
-  color: #00B7FF;
-}
+.icon-spacing { padding: 0 5px 0 5px }

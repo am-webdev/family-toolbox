@@ -19,17 +19,29 @@ block content
 		- var ddate = ''
 	p duedate: #{ddate}
 	p completed: #{task.completed}
-	p
-		a(role='button', class='btn btn-sm btn-primary', href='/tasks/'+task._id+'/edit') Edit
-		if(task.completed)
-			form(action='/tasks/'+task._id+'/reopen',method='POST',enctype='application/x-www-form-urlencoded')
-				input(type='hidden',value='PUT',name='_method')
-				button(type='submit', class='btn btn-sm btn-warning') Incomplete
-		else
-			form(action='/tasks/'+task._id+'/resolve',method='POST',enctype='application/x-www-form-urlencoded')
-				input(type='hidden',value='PUT',name='_method')
-				button(type='submit', class='btn btn-sm btn-success') Resolve
-	p
-		form(action='/tasks/'+task._id,method='POST',enctype='application/x-www-form-urlencoded')
-			input(type='hidden',value='DELETE',name='_method')
-			button(type='submit', class='btn btn-sm btn-danger') Delete
+	div(class='row')
+		div(class='col-xs-12 col-sm-12 col-md-8 top10')
+			div(class='row')
+				div(class='col-xs-6 col-sm-6')
+					if(!task.completed)
+						a(role='button', class='btn btn-sm btn-primary btn-block', href='/tasks/'+task._id+'/edit') Edit
+							span(class='glyphicon glyphicon-pencil icon-spacing', aria-hidden='true')
+					else 
+						a(role='button', class='btn btn-sm btn-primary btn-block', disabled="disabled") Edit
+							span(class='glyphicon glyphicon-pencil icon-spacing', aria-hidden='true')
+				div(class='col-xs-6 col-sm-6')
+					if(task.completed)
+						form(action='/tasks/'+task._id+'/reopen',method='POST',enctype='application/x-www-form-urlencoded')
+							input(type='hidden',value='PUT',name='_method')
+							button(type='submit', class='btn btn-sm btn-warning btn-block') Incomplete
+								span(class='glyphicon glyphicon-repeat icon-spacing', aria-hidden='true')
+					else
+						form(action='/tasks/'+task._id+'/resolve',method='POST',enctype='application/x-www-form-urlencoded')
+							input(type='hidden',value='PUT',name='_method')
+							button(type='submit', class='btn btn-sm btn-success btn-block') Resolve
+								span(class='glyphicon glyphicon-ok icon-spacing', aria-hidden='true')
+		div(class='col-xs-12 col-md-4 top10')
+			form(action='/tasks/'+task._id,method='POST',enctype='application/x-www-form-urlencoded')
+				input(type='hidden',value='DELETE',name='_method')
+				button(type='submit', class='btn btn-sm btn-danger btn-block') Delete
+					span(class='glyphicon glyphicon-trash icon-spacing', aria-hidden='true')
