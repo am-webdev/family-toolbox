@@ -176,20 +176,26 @@ router.get('/:id/edit', function(req, res) {
           mongoose.model('Family').find({
               '_id': { $in: familiesIDs}
           }, function(err, families){
-            res.format({
-                   //JSON response
-                   json: function(){
-                     res.json(task);
-                   },
-                  //HTML response
-                  html: function(){
-                   res.render('tasks/edit', {
-                    title: 'task' + task.id,
-                    "task" : task,
-                    "families": families
-                  });
-                 }
-               });
+            mongoose.model('User').find({
+              'families.family': { $in: familiesIDs}
+            }, function(err, assignees){
+              console.log(assignees);
+              res.format({
+                     //JSON response
+                     json: function(){
+                       res.json(task);
+                     },
+                    //HTML response
+                    html: function(){
+                     res.render('tasks/edit', {
+                      title: 'task' + task.id,
+                      "task" : task,
+                      "families": families,
+                      "assignees": assignees
+                    });
+                   }
+                 });
+            })
           })
         }
       }).populate("owner").populate("assignee");
@@ -200,7 +206,10 @@ router.put('/:id', function(req, res) {
     // Get our REST or form values. These rely on the "name" attributes
     var tmp_name = req.body.name;
     var tmp_description = req.body.description;
-    var tmp_assignee = req.body.assignee || new mongoose.Types.ObjectId();
+    var tmp_assignee = req.body.assignee;
+    if (tmp_assignee == -1) { // select none
+      tmp_assignee = new mongoose.Types.ObjectId();
+    }
     var tmp_duedate = req.body.duedate;
     var tmp_completed = req.body.completed;
 
