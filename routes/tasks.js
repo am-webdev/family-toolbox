@@ -13,7 +13,7 @@ var isAuthenticated = function (req, res, next) {
 
 router.all("/*", isAuthenticated, function(req, res, next) {
   res.locals.user = req.user || null;
-  
+
   next(); // if the middleware allowed us to get here,
           // just move on to the next route handler
 });
@@ -37,7 +37,7 @@ router.route('/')
         //retrieve all tasks from Monogo
         mongoose.model('Item').find({
           type: 'Task',
-          $or:[ {'owner': req.user.id}, {'assignee': req.user.id} ] 
+          $or:[ {'owner': req.user.id}, {'assignee': req.user.id} ]
         }, function (err, tasks) {
           if (err) {
             return console.error(err);
@@ -56,7 +56,7 @@ router.route('/')
                       res.json(tasks);
                     }
                   });
-                }     
+                }
               });
       })
     //POST a new task
@@ -134,8 +134,8 @@ router.param('id', function(req, res, next, id) {
             // once validation is done save the new item in the req
             req.id = id;
             // go to the next thing
-            next(); 
-          } 
+            next();
+          }
         }).populate("owner").populate("assignee");
   });
 
@@ -170,7 +170,7 @@ router.get('/:id/edit', function(req, res) {
         console.log('GET Error: There was a problem retrieving: ' + err);
       } else {
           var familiesIDs = [];
-          for (i = 0; i < req.user.families.length; i++) { 
+          for (i = 0; i < req.user.families.length; i++) {
             familiesIDs.push(new mongoose.Types.ObjectId( req.user.families[i].family ));
           }
           mongoose.model('Family').find({
@@ -225,7 +225,7 @@ router.put('/:id', function(req, res) {
             }, function (err, taskID) {
               if (err) {
                 res.send("There was a problem updating the information to the database: " + err);
-              } 
+              }
               else {
                       //HTML responds by going back to the page or you can be fancy and create a new view that shows a success page.
                       res.format({
@@ -262,7 +262,7 @@ router.put('/:id/resolve', function(req, res) {
     }, function (err, taskID) {
       if (err) {
         res.send("There was a problem updating the information to the database: " + err);
-      } 
+      }
       else {
         // Add points to the user profile
         mongoose.model('User').findById(req.user._id, function (err, user) {
@@ -273,6 +273,8 @@ router.put('/:id/resolve', function(req, res) {
 
           for (iFamCounter = 0; iFamCounter < user.families.length; iFamCounter++) {
             fam = user.families[iFamCounter];
+            console.log("fam.family:"+fam.family );
+            console.log("relatedFamily:"+relatedFamily.toString());
             if(fam.family == relatedFamily.toString()) {
               oldpoints = fam.points;
               relatedFamily_id = fam._id;
@@ -322,7 +324,7 @@ router.put('/:id/reopen', function(req, res) {
             }, function (err, taskID) {
               if (err) {
                 res.send("There was a problem updating the information to the database: " + err);
-              } 
+              }
               else {
                 // Add points to the user profile
                 mongoose.model('User').findById(req.user._id, function (err, user) {
@@ -333,6 +335,8 @@ router.put('/:id/reopen', function(req, res) {
 
                   for (iFamCounter = 0; iFamCounter < user.families.length; iFamCounter++) {
                     fam = user.families[iFamCounter];
+                    console.log("fam.family:"+fam.family );
+                    console.log("relatedFamily:"+relatedFamily.toString());
                     if(fam.family == relatedFamily.toString()) {
                       oldpoints = fam.points;
                       console.log("oldpoints"+oldpoints)
