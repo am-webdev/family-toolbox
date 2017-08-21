@@ -273,9 +273,7 @@ router.put('/:id/resolve', function(req, res) {
 
           for (iFamCounter = 0; iFamCounter < user.families.length; iFamCounter++) {
             fam = user.families[iFamCounter];
-            console.log("fam.family:"+fam.family );
-            console.log("relatedFamily:"+relatedFamily.toString());
-            if(fam.family == relatedFamily.toString()) {
+            if(relatedFamily && (fam.family == relatedFamily.toString())) {
               oldpoints = fam.points;
               relatedFamily_id = fam._id;
               // Save points within User Model that is saved later on
@@ -335,9 +333,7 @@ router.put('/:id/reopen', function(req, res) {
 
                   for (iFamCounter = 0; iFamCounter < user.families.length; iFamCounter++) {
                     fam = user.families[iFamCounter];
-                    console.log("fam.family:"+fam.family );
-                    console.log("relatedFamily:"+relatedFamily.toString());
-                    if(fam.family == relatedFamily.toString()) {
+                    if(relatedFamily && (fam.family == relatedFamily.toString())) {
                       oldpoints = fam.points;
                       console.log("oldpoints"+oldpoints)
                       relatedFamily_id = fam._id;
