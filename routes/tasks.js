@@ -179,7 +179,6 @@ router.get('/:id/edit', function(req, res) {
             mongoose.model('User').find({
               'families.family': { $in: familiesIDs}
             }, function(err, assignees){
-              console.log(assignees);
               res.format({
                      //JSON response
                      json: function(){
