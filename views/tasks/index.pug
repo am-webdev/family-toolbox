@@ -6,12 +6,12 @@ block content
          h4
             | #{title}
       each task, i in tasks
-         li.collection-item.avatar
+         li.collection-item.avatar.hoverable
             img.circle(alt=task.assignee, src="imgs/"+task.assignee+".png")
             span.title
                a( href='/tasks/'+task.id )
                   | #{task.name}
-            p
+            p.truncate
                | #{task.description}
             a.secondary-content
                span.new.badge.green(data-badge-caption="Pt")
