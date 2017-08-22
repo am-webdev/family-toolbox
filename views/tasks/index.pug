@@ -1,10 +1,23 @@
 extends ../layout
 
 block content
-    h2.
-         #{title}
-    +listGroup("links")
-        each task, i in tasks
-            a.list-group-item( href='/tasks/'+task.id )
-                h4.list-group-item-heading #{task.name}
-                p.list-group-item-text #{task.description}
+   ul.collection.with-header
+      li.collection-header
+         h4
+            | #{title}
+      each task, i in tasks
+         li.collection-item.avatar
+            img.circle(alt=task.assignee, src="imgs/"+task.assignee+".png")
+            span.title
+               a( href='/tasks/'+task.id )
+                  | #{task.name}
+            p
+               | #{task.description}
+            a.secondary-content
+               span.new.badge.green(data-badge-caption="Pt")
+                  | #{task.points.receive}
+               span.new.badge.blue(data-badge-caption="Votes")
+                  if(task.votes != "")
+                     | #{task.votes}
+                  else
+                     | 0
