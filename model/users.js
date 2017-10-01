@@ -17,7 +17,7 @@ var User = new Schema({
 			type: mongoose.Schema.Types.ObjectId,
 			ref: 'Family'
 		},
-		role: { 
+		role: {
 			type: String,
 			enum: ['User', 'Admin'],
 			dafault: "User"
