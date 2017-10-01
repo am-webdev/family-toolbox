@@ -1,46 +1,165 @@
 include mixins
 doctype
 html( lang="en" )
-    head
-        title= title
-        meta( charset='utf-8' )
-        meta( http-equiv='X-UA-Compatible', content='IE=edge' )
-        meta( name='viewport', content='width=device-width, initial-scale=1.0' )
-        meta( name='description', content='A family toolbox to manage todos and errands' )
-        link(href="/stylesheets/style.css", rel="stylesheet")
-        //- Bootswatch Theme
-        link(href="//maxcdn.bootstrapcdn.com/bootswatch/3.3.7/flatly/bootstrap.min.css", rel="stylesheet")
- 
-    body(style="padding-bottom:10rem;")
-        .container
-          if (error && error.length > 0)
+   head
+      title= title
+      meta( charset='utf-8' )
+      meta( http-equiv='X-UA-Compatible', content='IE=edge' )
+      meta( name='viewport', content='width=device-width, initial-scale=1.0' )
+      meta( name='description', content='A family toolbox to manage todos and errands' )
+
+      link(href="//fonts.googleapis.com/icon?family=Material+Icons", rel="stylesheet")
+      link(href="/css/materialize.min.css", rel="stylesheet")
+
+
+   body
+      div
+         if(user)
+            ul.dropdown-content(id="dropdown1")
+               li
+                  a(href="/tasks")
+                     | My Tasks
+               li
+                  a(href="/families/tasks/")
+                     | Family Tasks
+               li
+                  a(href="/tasks/new")
+                     | New Task
+            ul.dropdown-content(id="dropdown2")
+               li
+                  a(href="/errands")
+                     | My Errands
+               li
+                  a(href="/families/errands/")
+                     | Family Errands
+               li
+                  a(href="/errands/new")
+                     | New Errand
+            ul.dropdown-content(id="dropdown3")
+               li
+                  a(href="/families")
+                     | My Family
+               li
+                  a(href="/families/new")
+                     | Create new Family
+            ul.dropdown-content(id="dropdown4")
+               li
+                  a(href="/users/profile")
+                     | Edit Profile
+               li
+                  a(href="/logout")
+                     | Logout
+         nav
+            div.nav-wrapper
+               a.brand-logo.center(href="http://localhost:3000")
+                  i.material-icons
+                     | child_care
+                  | Family Toolbox
+               a.button-collapse(href="#" data-activates="mobile-demo")
+                  i.material-icons
+                     | menu
+
+               ul.left.hide-on-med-and-down
+                  if (user)
+                     li
+                        a.dropdown-button(href="#" data-activates="dropdown4")
+                           i.material-icons.right
+                              | arrow_drop_down
+                           | Hello #{user.alias}
+               ul.right.hide-on-med-and-down
+                  if (user)
+                     li
+                        a.dropdown-button(href="#" data-activates="dropdown1")
+                           i.material-icons.right
+                              | arrow_drop_down
+                           | Tasks
+                     li
+                        a.dropdown-button(href="#" data-activates="dropdown2")
+                           i.material-icons.right
+                              | arrow_drop_down
+                           | Errands
+                     li
+                        a.dropdown-button(href="#" data-activates="dropdown3")
+                           i.material-icons.right
+                              | arrow_drop_down
+                           | Family
+                  if (!user)
+                     li
+                        a(href="/login")
+                           | Login
+                     li
+                        a(href="/register")
+                           | Create new Account
+               ul.side-nav(id="mobile-demo")
+                  if (user)
+                     li.no-padding
+                        ul.collapsible.collapsible-accordion
+                           li
+                              a.collapsible-header(href="#!")
+                                 | Hello #{user.alias}
+                                 div.collapsible-body
+                                    ul
+                                       li
+                                          a(href="/users/profile")
+                                             | Edit Profile
+                                       li
+                                          a(href="/logout")
+                                             | Logout
+                           li
+                              a.collapsible-header
+                                 | Tasks
+                                 div.collapsible-body
+                                    ul
+                                       li
+                                          a(href="/tasks")
+                                             | My Tasks
+                                       li
+                                          a(href="/families/tasks/")
+                                             | Family Tasks
+                                       li
+                                          a(href="/tasks/new")
+                                             | New Task
+                           li
+                              a.collapsible-header(href="#!")
+                                 | Errands
+                                 div.collapsible-body
+                                    ul
+                                       li
+                                          a(href="/errands")
+                                             | My Errands
+                                       li
+                                          a(href="/families/errands/")
+                                             | Family Errands
+                                       li
+                                          a(href="/errands/new")
+                                             | New Errand
+                           li
+                              a.collapsible-header(href="#!")
+                                 | Family
+                                 div.collapsible-body
+                                    ul
+                                       li
+                                          a(href="/families")
+                                             | My Family
+                                       li
+                                          a(href="/families/new")
+                                             | Create new Family
+                  if (!user)
+                     li
+                        a(href="/login")
+                           | Login
+                     li
+                        a(href="/register")
+                           | Create new Account
+      .container
+         if (error && error.length > 0)
             br
             .alert.alert-dismissable.alert-danger
-              button.close( type="button", data-dismiss="alert" ) ×
-              | #{error}
+               button.close( type="button", data-dismiss="alert" ) ×
+               | #{error}
 
-          +nav("Family Toolbox", "dropdown_menu")
-            if (user)
-              +nav_item_dropdown( "#" )( label='Tasks' )
-                +nav_item( "/tasks" ) My Tasks
-                +nav_item( "/families/tasks/" ) Family Tasks
-                +nav_item( "/tasks/new" ) New Tasks
-              +nav_item_dropdown( "#" )( label='Errands' )
-                +nav_item( "/errands" ) My Errands
-                +nav_item( "/families/errands/" ) Family Errands
-                +nav_item( "/errands/new" ) New Errands
-              +nav_item_dropdown( "#" )( label='Family' )
-                +nav_item( "/families" ) My Family
-                +nav_item( "/families/new" ) Create new Family
-              +nav_item_dropdown( "#" )( label= 'Hello '+user.alias )
-                +nav_item( "/users/profile" ) Edit Profile
-                +nav_item( "/logout" ) Logout
-            if (!user)
-              +nav_item( "/login" ) Login
-              +nav_item( "/register" ) Create new Account
+         block content
 
-
-          block content
- 
-        script( src='//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js' )
-        script( src='//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js' )
+         script( src='//code.jquery.com/jquery-3.2.1.min.js' )
+         script( src='/js/materialize.min.js' )
+         script( src='/js/init.js' )

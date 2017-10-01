@@ -1,15 +1,22 @@
 extends layout
 
 block content
-  .container
-    h1 Login Page
-    p.lead Welcome to the Family Toolbox.
-    br
-    form(role='form', action="/login",method="post", style='max-width: 300px;')
-      .form-group
-          input.form-control(type='text', name="username", placeholder='Enter username')
-      .form-group
-        input.form-control(type='password', name="password", placeholder='Password')
-      button.btn.btn-primary(type='submit') Login
-      a(href='/')
-        button.btn.btn-default(type="button") Cancel
+   p.lead.center-align Please, login into your account
+   div.row
+      form.col.s12(role='form', action="/login", method="post")
+         div.row
+            div.input-field.col.s12
+               input.validate(type='text' name='username' id='username' )
+               label(for='username') Enter your login
+         div.row
+            div.input-field.col.s12
+               input.validate(type='password' name='password' id='password' )
+               label(for='password') Enter your password
+            label.right
+               a.pink-text(href="#")
+                  | Forgot Password?
+         div.row
+            button.right.btn.waves-effect.waves-light(type='submit' name="action") Login
+               i.material-icons.right
+                  | send
+            a.left.waves-effect.waves-light.btn.red.lighten-1(href='/') Cancel
