@@ -1,14 +1,15 @@
 extends ../layout
 
 block content
-    h1.
-        User Profile ID #{user.id}
+    p
+        User Profile ID 
+            strong #{user.id}
 
-    h2.
+    h4.
         Families
     each fam, i in families
             a.list-group-item()
-                h4.list-group-item-heading #{fam.name}
+                h5.list-group-item-heading #{fam.name}
                 p.list-group-item-text
                     p Description: #{fam.description}
                     each fam_details, i in families_userrole.families
@@ -17,9 +18,9 @@ block content
                         if (fam1.toString() == famA.toString())
                             p Points: #{fam_details.points}
 
-    h2.
+    h4.
         User Settings
-    h3.
+    h5.
         Change Display Name
     if(saved)
         #{saved}
@@ -28,5 +29,5 @@ block content
             input#inputAlias(type='text', value= user.alias, name='alias')
             input(type='hidden',value='PUT',name='_method')
         p
-            button#btnSubmit(type='submit').
+            button#btnSubmit(type='submit', class='btn-large').
                 Save

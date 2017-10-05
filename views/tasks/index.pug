@@ -3,11 +3,11 @@ extends ../layout
 block content
    ul.collection.with-header
       li.collection-header
-         h4
+         h5
             | #{title}
       each task, i in tasks
          li.collection-item.avatar.hoverable
-            img.circle(alt=task.assignee, src="imgs/"+task.assignee+".png")
+            img.circle(alt=task.assignee, src="imgs/"+ task.assignee +".png") 
             span.title
                a( href='/tasks/'+task.id )
                   | #{task.name}

@@ -1,18 +1,16 @@
 extends ../layout
 
 block content
-    h1.
+    h4.
         #{title}
     form#formAddtask(name="addtask",method="post",action="/tasks")
-        p Name: 
-            input#inputName(type="text", placeholder="ex. John Smith", name="name")
+        p Title: 
+            input#inputName(type="text", placeholder="Enter a short summary of the task", name="name")
 
-        p description:
-            input#inputDescription(type="text", placeholder="description", name="description")
-        p Already completed?: 
-            input#completed(type="checkbox", name="completed")
+        p Description:
+            input#inputDescription(type="text", placeholder="Enter the description", name="description")
         p Due Date:
-            input#inputDate(type="text", placeholder="Date", name="Date")
+            input.datepicker(type="date", name='duedate', data-date-format='yyyy-mm-dd', placeholder="Enter a due date")
         p
-            button#btnSubmit(type="submit") submit
+            button#btnSubmit(type="submit", class="btn-large") submit
 

@@ -1,10 +1,16 @@
 extends layout
 
 block content
-  if (!user)
-    a(href="/login") Login
-    br
-    a(href="/register") Register
-  if (user)
-    p You are currently logged in as #{user.username}
-    a(href="/logout") Logout
+	div.container
+		div.row
+			div(class="col s12")
+				if (!user)
+					p.center
+						a(class="btn", href="/login") Login
+					p.center
+						a(class="btn", href="/register") Register
+			div(class="col s12")
+				if (user)
+					p.center You are currently logged in as #{user.username}
+					p.center
+						a(href="/logout") Logout

@@ -9,4 +9,5 @@ $( document ).ready(function(){
       selectYears: true,
       firstDay: 1  // Monday as first day of week
    });
+   $('select').material_select();
 })

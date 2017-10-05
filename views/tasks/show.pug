@@ -1,8 +1,8 @@
 extends ../layout
 
 block content
-	h1.
-		Task #{task.name}
+	h4.
+		#{task.name}
 	p Id: #{task.id}
 	p description: #{task.description}
 	p owner: #{task.owner.alias}
@@ -22,14 +22,14 @@ block content
 	div(class='row')
 		div(class='col-xs-12 col-sm-12 col-md-8 top10')
 			div(class='row')
-				div(class='col-xs-6 col-sm-6')
+				div(class='col s3 m3')
 					if(!task.completed)
 						a(role='button', class='btn btn-sm btn-primary btn-block', href='/tasks/'+task._id+'/edit') Edit
 							span(class='glyphicon glyphicon-pencil icon-spacing', aria-hidden='true')
 					else 
 						a(role='button', class='btn btn-sm btn-primary btn-block', disabled="disabled") Edit
 							span(class='glyphicon glyphicon-pencil icon-spacing', aria-hidden='true')
-				div(class='col-xs-6 col-sm-6')
+				div(class='col s3 m3')
 					if(task.completed)
 						form(action='/tasks/'+task._id+'/reopen',method='POST',enctype='application/x-www-form-urlencoded')
 							input(type='hidden',value='PUT',name='_method')
@@ -40,8 +40,8 @@ block content
 							input(type='hidden',value='PUT',name='_method')
 							button(type='submit', class='btn btn-sm btn-success btn-block') Resolve
 								span(class='glyphicon glyphicon-ok icon-spacing', aria-hidden='true')
-		div(class='col-xs-12 col-md-4 top10')
+		div(class='col s12 m12')
 			form(action='/tasks/'+task._id,method='POST',enctype='application/x-www-form-urlencoded')
 				input(type='hidden',value='DELETE',name='_method')
-				button(type='submit', class='btn btn-sm btn-danger btn-block') Delete
+				button(type='submit', class='btn red lighten-1') Delete
 					span(class='glyphicon glyphicon-trash icon-spacing', aria-hidden='true')

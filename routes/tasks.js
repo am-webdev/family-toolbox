@@ -207,7 +207,7 @@ router.put('/:id', function(req, res) {
     var tmp_description = req.body.description;
     var tmp_assignee = req.body.assignee;
     if (tmp_assignee == -1) { // select none
-      tmp_assignee = new mongoose.Types.ObjectId();
+      tmp_assignee = undefined;
     }
     var tmp_duedate = req.body.duedate;
     var tmp_completed = req.body.completed;
